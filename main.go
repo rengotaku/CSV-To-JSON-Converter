@@ -1,4 +1,3 @@
-// https://github.com/Ahmad-Magdy/CSV-To-JSON-Converter/blob/master/main.go
 package main
 
 import (
