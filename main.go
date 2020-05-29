@@ -1,3 +1,4 @@
+// https://github.com/Ahmad-Magdy/CSV-To-JSON-Converter/blob/master/main.go
 package main
 
 import (
@@ -52,20 +53,25 @@ func ReadCSV(path *string) ([]byte, string) {
 		buffer.WriteString("{")
 		for j, y := range d {
 			buffer.WriteString(`"` + headersArr[j] + `":`)
-			_, fErr := strconv.ParseFloat(y, 32)
-			_, bErr := strconv.ParseBool(y)
-			if fErr == nil {
-				buffer.WriteString(y)
-			} else if bErr == nil {
-				buffer.WriteString(strings.ToLower(y))
+			if y == "" {
+				buffer.WriteString((`""`))
 			} else {
-				buffer.WriteString((`"` + y + `"`))
+				_, fErr := strconv.ParseFloat(y, 32)
+				_, bErr := strconv.ParseBool(y)
+				// when csv value like as 0xxxx or 123_456, MarshalIndent put out nothings.
+				if y[0] != '0' && bytes.IndexAny([]byte{'_'}, y) == -1 && fErr == nil {
+					buffer.WriteString(y)
+				} else if bErr == nil {
+					buffer.WriteString(strings.ToLower(y))
+				} else {
+					buffer.WriteString((`"` + y + `"`))
+				}
 			}
+
 			//end of property
 			if j < len(d)-1 {
 				buffer.WriteString(",")
 			}
-
 		}
 		//end of object of the array
 		buffer.WriteString("}")
@@ -76,7 +82,12 @@ func ReadCSV(path *string) ([]byte, string) {
 
 	buffer.WriteString(`]`)
 	rawMessage := json.RawMessage(buffer.String())
+
 	x, _ := json.MarshalIndent(rawMessage, "", "  ")
+	if len(x) == 0 {
+		log.Fatal("Something wrong, on the way to convert CSV to JSON.")
+	}
+
 	newFileName := filepath.Base(*path)
 	newFileName = newFileName[0:len(newFileName)-len(filepath.Ext(newFileName))] + ".json"
 	r := filepath.Dir(*path)
