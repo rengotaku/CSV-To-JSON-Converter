@@ -1,9 +1,9 @@
 # CSV-To-JSON-Converter
 A little script to convert CSV Files to JSON in easy and flexible way using GoLang.
 
-**The Reason** for this tool is i was in charge to convert a couple of csv files to JSON and 
-i didn't find simple thing give me exactly what i expect from such a tool,
-and i looked for golang examples but i found most of it using struct for single case, so i built this to be flexible enough for any file.
+**The Reason** for this tool is I was in charge to convert a couple of csv files to JSON and 
+I didn't find simple thing give me exactly what I expect from such a tool,
+and I looked for golang examples but I found most of it using struct for single case, so I built this to be flexible enough for any file.
 ## How to use this tool:
 * After Downloading the go file you can run
 `go run main.go -path=C:\\TheFile.csv` or `go run main.go -path C:\\TheFile.csv` or after getting the executable file `myfile.exe -path=C:\\TheFile.csv`
