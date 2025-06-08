@@ -58,7 +58,7 @@ func ReadCSV(path *string) ([]byte, string) {
 				_, fErr := strconv.ParseFloat(y, 32)
 				_, bErr := strconv.ParseBool(y)
 				// when csv value like as 0xxxx or 123_456, MarshalIndent put out nothings.
-				if y[0] != '0' && bytes.IndexAny([]byte{'_'}, y) == -1 && fErr == nil {
+				if y[0] != '0' && bytes.IndexAny([]byte(y), "_") == -1 && fErr == nil {
 					buffer.WriteString(y)
 				} else if bErr == nil {
 					buffer.WriteString(strings.ToLower(y))
